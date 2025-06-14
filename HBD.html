@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title> 
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+        
+        #messagePage {
+            display: none;
+        }
+        
+        h1 {
+            color: #d23669;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cake {
+            font-size: 5em;
+            margin: 20px 0;
+            animation: bounce 0.5s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-15px); }
+        }
+        
+        .message-field {
+            width: 80%;
+            height: 40px;
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #d23669;
+            border-radius: 20px;
+            margin-top: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .message-field:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(210, 54, 105, 0.5);
+        }
+        
+        .message-field::placeholder {
+            color: #d23669;
+            opacity: 0.7;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #d23669;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(210, 54, 105, 0.5);
+            transform: scale(1.02);
+        }
+        
+        .btn {
+            background-color: #d23669;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(210, 54, 105, 0.5);
+        }
+        
+        .back-btn {
+            background-color: #666;
+        }
+        
+        /* Balloon styles */
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            border-radius: 50%;
+            z-index: 1;
+            animation: float 8s linear infinite;
+            opacity: 0.8;
+        }
+        
+        .balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            width: 2px;
+            height: 15px;
+            background-color: rgba(0,0,0,0.2);
+            transform: translateX(-50%);
+        }
+        
+        @keyframes float {
+            0% { 
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            100% { 
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Confetti styles */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            z-index: 100;
+            animation: confettiFall 3s linear forwards;
+        }
+        
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Balloons will be added dynamically -->
+    
+    <!-- Birthday Page -->
+    <div class="container" id="birthdayPage">
+        <h1>Happy Birthday!</h1>
+        <div class="cake">🎂</div>
+        <p>Wishing you a fantastic day!</p>
+        
+        <input type="text" class="message-field" placeholder="Message for you" readonly>
+    </div>
+
+    <!-- Message Page -->
+    <div class="container" id="messagePage">
+        <h1>heading of message</h1>
+        <textarea id="messageText" placeholder="main text write here"></textarea>
+    </div>
+
+    <script>
+        // Get elements
+        const birthdayPage = document.getElementById('birthdayPage');
+        const messagePage = document.getElementById('messagePage');
+        const messageField = document.querySelector('.message-field');
+        const backBtn = document.getElementById('backBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const messageText = document.getElementById('messageText');
+
+        // Balloon colors
+        const balloonColors = [
+            '#ff6b6b', '#ff9ff3', '#feca57', '#ff9f43',
+            '#48dbfb', '#1dd1a1', '#5f27cd', '#ff9a9e'
+        ];
+
+        // Create balloons
+        function createBalloons() {
+            for (let i = 0; i < 15; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+                balloon.style.animationDuration = (6 + Math.random() * 6) + 's';
+                balloon.style.animationDelay = Math.random() * 5 + 's';
+                balloon.style.width = (30 + Math.random() * 30) + 'px';
+                balloon.style.height = (40 + Math.random() * 40) + 'px';
+                document.body.appendChild(balloon);
+            }
+        }
+
+        // Create confetti
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+                confetti.style.animationDuration = (1 + Math.random() * 2) + 's';
+                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+                confetti.style.width = (5 + Math.random() * 10) + 'px';
+                confetti.style.height = (5 + Math.random() * 10) + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+
+        // Redirect to message page when clicking the field
+        messageField.addEventListener('click', function() {
+            birthdayPage.style.display = 'none';
+            messagePage.style.display = 'block';
+            messageText.focus();
+        });
+
+        // Go back to birthday page
+        backBtn.addEventListener('click', function() {
+            messagePage.style.display = 'none';
+            birthdayPage.style.display = 'block';
+        });
+
+        // Save message with celebration
+        saveBtn.addEventListener('click', function() {
+            if (messageText.value.trim() !== '') {
+                createConfetti();
+                setTimeout(() => {
+                    messagePage.style.display = 'none';
+                    birthdayPage.style.display = 'block';
+                    messageText.value = '';
+                }, 1500);
+            }
+        });
+
+        // Initialize balloons
+        window.addEventListener('load', function() {
+            createBalloons();
+            
+            // Add more balloons periodically
+            setInterval(createBalloons, 5000);
+        });
+    </script>
+</body>
+</html>
