@@ -5,21 +5,29 @@ Contains the details of the static application code
 
 PS C:\WINDOWS\system32> cd C:\Users\HP\OneDrive\Desktop\Devops\App_EC2
   -- cd to the local directory
+  
 PS C:\Users\HP\OneDrive\Desktop\Devops\App_EC2> git init
   -- Initializes a new Git repository in the current directory.
+  
 Reinitialized existing Git repository in C:/Users/HP/OneDrive/Desktop/Devops/App_EC2/.git/
   --The message "Reinitialized existing Git repository" indicates there was already a .git folder here, so Git is just reusing it.
+  
 PS C:\Users\HP\OneDrive\Desktop\Devops\App_EC2> git remote add origin https://github.com/siva82538/Static_website
   -- Connects your local repository to a remote repository on GitHub.
+  
 PS C:\Users\HP\OneDrive\Desktop\Devops\App_EC2> git add .
   -- Stages all changes in the current directory (the . means "all files here").
+  
 PS C:\Users\HP\OneDrive\Desktop\Devops\App_EC2> git commit -m "your commit message describing the changes"
 [master (root-commit) d70f0e8] your commit message describing the changes
  1 file changed, 279 insertions(+)
  create mode 100644 HBD.html
+   -- copied the app to repo under master.
 PS C:\Users\HP\OneDrive\Desktop\Devops\App_EC2> git push -u origin main
 error: src refspec main does not match any
 error: failed to push some refs to 'https://github.com/siva82538/Static_website'
+
+
 PS C:\Users\HP\OneDrive\Desktop\Devops\App_EC2> git push -u origin master
 info: please complete authentication in your browser...
 Enumerating objects: 3, done.
@@ -35,11 +43,15 @@ remote:
 To https://github.com/siva82538/Static_website
  * [new branch]      master -> master
 branch 'master' set up to track 'origin/master'.
+
+
 PS C:\Users\HP\OneDrive\Desktop\Devops\App_EC2> git status
 On branch master
 Your branch is up to date with 'origin/master'.
 
 nothing to commit, working tree clean
+
+
 PS C:\Users\HP\OneDrive\Desktop\Devops\App_EC2> git remote -v
 origin  https://github.com/siva82538/Static_website (fetch)
 origin  https://github.com/siva82538/Static_website (push)
