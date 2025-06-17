@@ -1,0 +1,78 @@
+Here's a concise summary of your Git/SSH authentication journey in a single file format:
+
+GitHub SSH Authentication Troubleshooting Summary
+Issues Encountered
+Path Errors
+
+Attempted Windows paths (C:\...) in WSL (requires /mnt/c/...)
+
+Authentication Failures
+
+remote: Support for password authentication was removed (GitHub requires PAT/SSH)
+
+Permission denied (publickey) (SSH key not properly configured)
+
+Configuration Problems
+
+Git identity not set (user.name/user.email)
+
+SSH key generated but not registered with GitHub
+
+Solution Workflow
+1. Initialize Git & Set Identity
+bash
+cd /mnt/c/Users/HP/OneDrive/Desktop/Devops/App_EC2  # Correct WSL path
+git config --global user.name "siva82538"
+git config --global user.email "sivareddycva15@gmail.com"
+2. SSH Key Generation & Setup
+bash
+ssh-keygen -t ed25519 -C "sivareddycva15@gmail.com"  # Generate key (press Enter 3x)
+cat ~/.ssh/id_ed25519.pub  # Copy key contents
+Paste output to:
+GitHub SSH Keys Settings
+
+3. SSH Agent Configuration
+bash
+eval "$(ssh-agent -s)"  # Start agent
+ssh-add ~/.ssh/id_ed25519  # Add key
+chmod 600 ~/.ssh/id_ed25519  # Secure permissions
+chmod 644 ~/.ssh/id_ed25519.pub
+4. Verify SSH Connection
+bash
+ssh -T git@github.com  # Expected: "Hi siva82538! You've successfully authenticated..."
+5. Configure Git Remote
+bash
+git remote set-url origin git@github.com:siva82538/Static_website.git
+6. Final Push
+bash
+git push -u origin master
+Key Fixes
+✅ Path Format
+Used /mnt/c/ instead of C:\ for WSL
+
+✅ Authentication Method
+Switched from HTTPS (password) to SSH
+
+✅ Key Validation
+Ensured public key matched exactly in GitHub settings
+
+✅ Permissions
+Corrected SSH key file permissions (600 for private key)
+
+Debugging Tips
+Verbose SSH Test:
+ssh -vT git@github.com shows authentication steps
+
+Check Remote URL:
+git remote -v should show git@github.com:... (not HTTPS)
+
+Re-add Key if Needed:
+
+bash
+ssh-add -D && ssh-add ~/.ssh/id_ed25519
+Prevention for Future
+Always use SSH for GitHub repos
+
+Store PATs securely if using HTTPS
+
+Verify git remote -v after cloning
