@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Static EC2 Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        header nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        section {
+            display: none;
+            padding: 40px;
+            text-align: center;
+        }
+        section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>My Static Website on EC2</h1>
+    <nav>
+        <a href="#" onclick="showSection('home')">Home</a>
+        <a href="#" onclick="showSection('about')">About</a>
+        <a href="#" onclick="showSection('contact')">Contact</a>
+    </nav>
+</header>
+
+<section id="home" class="active">
+    <h2>Welcome!</h2>
+    <p>This is a simple static website hosted on AWS EC2 with Load Balancer and Auto Scaling.</p>
+</section>
+
+<section id="about">
+    <h2>About Us</h2>
+    <p>This page provides info about the site and its purpose — DevOps practice!</p>
+</section>
+
+<section id="contact">
+    <h2>Contact</h2>
+    <p>Reach us at <strong>admin@example.com</strong>.</p>
+</section>
+
+<script>
+    function showSection(id) {
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(id).classList.add('active');
+    }
+</script>
+
+</body>
+</html>
